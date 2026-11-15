@@ -3,5 +3,17 @@
   "categorias": [
     "Tênis"
   ],
-  "itens": []
+  "itens": [
+    {
+      "id": "i1794785764622",
+      "tipo": "viagem",
+      "origem": "CNF",
+      "origemNome": "Belo Horizonte",
+      "destino": "REC",
+      "destinoNome": "Recife",
+      "ida": "2026-11-16",
+      "volta": "2026-11-23",
+      "pessoas": 2
+    }
+  ]
 }
