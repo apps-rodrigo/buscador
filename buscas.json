@@ -5,24 +5,13 @@
   ],
   "itens": [
     {
-      "id": "i1794785764622",
+      "id": "i1794785807299",
       "tipo": "viagem",
       "origem": "CNF",
       "origemNome": "Belo Horizonte",
-      "destino": "REC",
-      "destinoNome": "Recife",
-      "ida": "2026-11-16",
-      "volta": "2026-11-23",
-      "pessoas": 2
-    },
-    {
-      "id": "i1794785786732",
-      "tipo": "viagem",
-      "origem": "CNF",
-      "origemNome": "Belo Horizonte",
-      "destino": "REC",
-      "destinoNome": "Recife",
-      "ida": "2026-11-16",
+      "destino": "NAT",
+      "destinoNome": "Natal",
+      "ida": "2026-11-23",
       "volta": "2026-11-23",
       "pessoas": 2
     }
