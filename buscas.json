@@ -5,26 +5,32 @@
   ],
   "itens": [
     {
-      "id": "i1794785807299",
+      "id": "i1794785764622",
       "tipo": "viagem",
       "origem": "CNF",
       "origemNome": "Belo Horizonte",
-      "destino": "NAT",
-      "destinoNome": "Natal",
-      "ida": "2026-11-23",
+      "destino": "REC",
+      "destinoNome": "Recife",
+      "ida": "2026-11-16",
       "volta": "2026-11-23",
       "pessoas": 2
     },
     {
-      "id": "i1794786138683",
+      "id": "i1794785786732",
       "tipo": "viagem",
       "origem": "CNF",
       "origemNome": "Belo Horizonte",
-      "destino": "FLN",
-      "destinoNome": "Florianópolis",
-      "ida": "2026-11-23",
-      "volta": "2026-11-30",
+      "destino": "REC",
+      "destinoNome": "Recife",
+      "ida": "2026-11-16",
+      "volta": "2026-11-23",
       "pessoas": 2
+    },
+    {
+      "id": "i1794786169658",
+      "tipo": "produto",
+      "categoria": "Tênis",
+      "termo": "Air force 1  tamanho 39"
     }
   ]
 }
