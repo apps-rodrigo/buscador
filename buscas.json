@@ -16,17 +16,6 @@
       "pessoas": 2
     },
     {
-      "id": "i1794785786732",
-      "tipo": "viagem",
-      "origem": "CNF",
-      "origemNome": "Belo Horizonte",
-      "destino": "REC",
-      "destinoNome": "Recife",
-      "ida": "2026-11-16",
-      "volta": "2026-11-23",
-      "pessoas": 2
-    },
-    {
       "id": "i1794786577281",
       "tipo": "produto",
       "categoria": "Tênis",
