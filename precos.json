@@ -1,12 +1,61 @@
 {
   "resultados": {
-    "i1794786506816": {
-      "erro": "Google hasn't returned any results for this query."
+    "i1794786538132": {
+      "ofertas": [
+        {
+          "titulo": "Tênis Air Force 1 Shadow Branco",
+          "loja": "impulseoutlet.lojavirtualnuvem.com.br",
+          "preco": 169,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:7633721272673374100,headlineOfferDocid:7633721272673374100,imageDocid:8666071400679194126,rds:PC_18385425046990961649|PROD_PC_18385425046990961649,pvt:a&hl=pt-br&gl=br&udm=28"
+        },
+        {
+          "titulo": "Tênis Masculino Nike Revolution 8 MIDNIGHT NAVYPURE P 039",
+          "loja": "Drastosa Esportes",
+          "preco": 299.99,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:3344873672056176190,headlineOfferDocid:3344873672056176190,imageDocid:9196202904213762475,rds:PC_5477693794596520766|PROD_PC_5477693794596520766,pvt:a&hl=pt-br&gl=br&udm=28"
+        },
+        {
+          "titulo": "Tênis Nike Air Max Amarelo E Branco 39 - Usado - Moda Confortável",
+          "loja": "Enjoei.com",
+          "preco": 308,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:11798950215713921805,headlineOfferDocid:11798950215713921805,imageDocid:9417875746841393147,rds:PC_6266131367749294840|PROD_PC_6266131367749294840,pvt:a&hl=pt-br&gl=br&udm=28"
+        },
+        {
+          "titulo": "Tenis Nike Air Max Excee Verde 39 - Usado",
+          "loja": "Enjoei.com",
+          "preco": 318,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:10966122990783128674,headlineOfferDocid:10966122990783128674,imageDocid:9660830989766573654,pvt:a&hl=pt-br&gl=br&udm=28"
+        },
+        {
+          "titulo": "Tênis Air Force 1 Shadow Candy",
+          "loja": "impulseoutlet.lojavirtualnuvem.com.br",
+          "preco": 399,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:18142394491022191581,headlineOfferDocid:18142394491022191581,imageDocid:174932516170855585,rds:PC_18385425046990961649|PROD_PC_18385425046990961649,pvt:a&hl=pt-br&gl=br&udm=28"
+        },
+        {
+          "titulo": "Tênis Nike Air Max Excee Masculino - Preto - Masculino - Dafiti",
+          "loja": "Dafiti",
+          "preco": 429.99,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:1643797487517081420,headlineOfferDocid:1643797487517081420,imageDocid:14331756437436166309,rds:PC_6266131367749294840|PROD_PC_6266131367749294840,pvt:a&hl=pt-br&gl=br&udm=28"
+        },
+        {
+          "titulo": "Tênis Nike Masculino - Preto - 39 - Lisa",
+          "loja": "Enjoei.com",
+          "preco": 512,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:2393563554607797074,headlineOfferDocid:2393563554607797074,imageDocid:6376527014258896651,pvt:a&hl=pt-br&gl=br&udm=28"
+        },
+        {
+          "titulo": "Tênis Nike Air Force 1 '07 Mini Jewel Feminino",
+          "loja": "Authentic Feet",
+          "preco": 549.99,
+          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=catalogid:8071771525011905628,productid:6956961436927445869,headlineOfferDocid:5338451751848457715,imageDocid:3037197051603777084,rds:PC_4680008169730778177|PROD_PC_4680008169730778177,gpcid:4680008169730778177,mid:576462833332917639,pvt:a&hl=pt-br&gl=br&udm=28"
+        }
+      ]
     }
   },
   "uso": {
     "mes": "2026-11",
-    "buscas": 1
+    "buscas": 2
   },
-  "atualizado": "2026-11-15T23:48:35.962Z"
+  "atualizado": "2026-11-15T23:49:08.739Z"
 }
