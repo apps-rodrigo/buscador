@@ -1,0 +1,37 @@
+name: Buscar precos
+
+on:
+  workflow_dispatch:
+    inputs:
+      id:
+        description: 'Buscar so um item (opcional)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: buscar
+  cancel-in-progress: false
+
+jobs:
+  buscar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Buscar precos
+        run: node robo.js
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          SO_ID: ${{ github.event.inputs.id }}
+
+      - name: Salvar resultado
+        run: |
+          git config user.name "robo-buscador"
+          git config user.email "robo-buscador@users.noreply.github.com"
+          git add precos.json
+          git diff --cached --quiet || git commit -m "Atualiza precos"
+          git pull --rebase
+          git push

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meu Buscador</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; margin: 0 auto; padding: 16px; background: #f2f4f7; color: #1c1c1c; max-width: 720px; }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  h1 { font-size: 22px; margin: 0; }
+  h2 { font-size: 17px; margin: 0 0 8px; }
+  h3 { font-size: 14px; margin: 12px 0 4px; color: #555; text-transform: uppercase; }
+  #status { min-height: 22px; margin: 10px 0; font-size: 15px; color: #12408a; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; }
+  .chip { padding: 10px 14px; border-radius: 20px; background: #dfe5ee; border: 0; font-size: 15px; cursor: pointer; }
+  .chip.ativo { background: #1f5fbf; color: #fff; }
+  .chip.novo { background: #fff; border: 1px dashed #5f6b7a; }
+  .cartao { background: #fff; border-radius: 12px; padding: 14px; margin-top: 12px; }
+  label { display: block; font-size: 14px; margin: 10px 0 4px; color: #444; }
+  input, textarea { width: 100%; font-size: 17px; padding: 11px; border: 1px solid #b8c0cc; border-radius: 8px; font-family: inherit; }
+  .dupla { display: flex; gap: 8px; }
+  .dupla > div { flex: 1; }
+  .botao { display: block; width: 100%; font-size: 17px; padding: 13px; border: 0; border-radius: 10px; background: #1f5fbf; color: #fff; margin-top: 12px; cursor: pointer; }
+  .icone { border: 0; background: none; font-size: 24px; cursor: pointer; }
+  .linha { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #e6e9ee; font-size: 15px; text-decoration: none; color: #1c1c1c; }
+  .linha b { white-space: nowrap; color: #0a7a33; }
+  .linha small { color: #666; display: block; }
+  .acoes { display: flex; gap: 16px; margin-top: 10px; }
+  .acoes button, .link { border: 0; background: none; color: #1f5fbf; font-size: 15px; padding: 6px 0; text-decoration: none; display: inline-block; cursor: pointer; }
+  .acoes .perigo { color: #c62828; }
+  .nota { font-size: 14px; color: #666; }
+  .erro { font-size: 14px; color: #c62828; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Meu Buscador</h1>
+  <button class="icone" id="btnConfig">⚙</button>
+</header>
+<div id="status"></div>
+
+<div class="cartao" id="config" hidden>
+  <h2>Configuração</h2>
+  <label for="campoToken">Token do GitHub (fica só neste aparelho)</label>
+  <input id="campoToken" type="password" placeholder="github_pat_...">
+  <label for="campoLojas">Lojas confiáveis (separadas por vírgula)</label>
+  <textarea id="campoLojas" rows="4"></textarea>
+  <div class="nota">Só aparecem ofertas dessas lojas. Deixe vazio para mostrar todas.</div>
+  <button class="botao" id="btnSalvarConfig">Salvar</button>
+</div>
+
+<div class="chips" id="abas"></div>
+<div class="cartao" id="form"></div>
+<div id="itens"></div>
+<div class="cartao nota" id="rodape"></div>
+
+<datalist id="aeroportos">
+  <option value="Belo Horizonte (CNF)"></option>
+  <option value="São Paulo (SAO)"></option>
+  <option value="Rio de Janeiro (RIO)"></option>
+  <option value="Recife (REC)"></option>
+  <option value="Salvador (SSA)"></option>
+  <option value="Fortaleza (FOR)"></option>
+  <option value="Maceió (MCZ)"></option>
+  <option value="Natal (NAT)"></option>
+  <option value="João Pessoa (JPA)"></option>
+  <option value="Porto Seguro (BPS)"></option>
+  <option value="Florianópolis (FLN)"></option>
+  <option value="Foz do Iguaçu (IGU)"></option>
+  <option value="Porto Alegre (POA)"></option>
+  <option value="Curitiba (CWB)"></option>
+  <option value="Brasília (BSB)"></option>
+  <option value="Vitória (VIX)"></option>
+  <option value="Aracaju (AJU)"></option>
+  <option value="São Luís (SLZ)"></option>
+  <option value="Belém (BEL)"></option>
+  <option value="Manaus (MAO)"></option>
+  <option value="Buenos Aires (BUE)"></option>
+  <option value="Santiago (SCL)"></option>
+  <option value="Lisboa (LIS)"></option>
+  <option value="Orlando (MCO)"></option>
+</datalist>
+
+<script>
+  var CHAVE_TOKEN = 'buscador-token';
+  var token = '';
+  try { token = localStorage.getItem(CHAVE_TOKEN) || ''; } catch (e) {}
+
+  var DONO = location.hostname.split('.')[0];
+  var REPO = location.pathname.split('/').filter(Boolean)[0] || '';
+  var API = 'https://api.github.com/repos/' + DONO + '/' + REPO;
+
+  var lista = { lojas: [], categorias: ['Tênis'], itens: [] };
+  var precos = { atualizado: '', uso: { mes: '', buscas: 0 }, resultados: {} };
+  var aba = 'Viagens';
+  var ocupado = false;
+
+  // ---------- UTILIDADES ----------
+  function el(tag, props, filhos) {
+    var e = document.createElement(tag);
+    for (var k in (props || {})) {
+      if (k === 'texto') e.textContent = props[k];
+      else if (k === 'clique') e.onclick = props[k];
+      else e.setAttribute(k, props[k]);
+    }
+    (filhos || []).forEach(function (f) { if (f) e.appendChild(f); });
+    return e;
+  }
+  function $(id) { return document.getElementById(id); }
+  function status(msg) { $('status').textContent = msg || ''; }
+  function dinheiro(v) { return typeof v === 'number' ? v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : '—'; }
+  function dataBR(d) { return d ? d.split('-').reverse().join('/') : ''; }
+  function paraB64(txt) { return btoa(unescape(encodeURIComponent(txt))); }
+  function deB64(b64) { return decodeURIComponent(escape(atob(b64.replace(/\s/g, '')))); }
+  function esperar(ms) { return new Promise(function (ok) { setTimeout(ok, ms); }); }
+
+  // ---------- GITHUB ----------
+  function gh(caminho, opcoes) {
+    opcoes = opcoes || {};
+    opcoes.headers = { Accept: 'application/vnd.github+json' };
+    if (token) opcoes.headers.Authorization = 'Bearer ' + token;
+    return fetch(API + caminho, opcoes);
+  }
+
+  async function lerArquivo(nome, padrao) {
+    try {
+      if (token) {
+        var r = await gh('/contents/' + nome + '?ref=main', { cache: 'no-store' });
+        if (!r.ok) return padrao;
+        var j = await r.json();
+        return JSON.parse(deB64(j.content));
+      }
+      var r2 = await fetch('./' + nome + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!r2.ok) return padrao;
+      return await r2.json();
+    } catch (e) { return padrao; }
+  }
+
+  async function salvarLista() {
+    var corpo = { message: 'Atualiza lista de buscas', content: paraB64(JSON.stringify(lista, null, 2)), branch: 'main' };
+    var atual = await gh('/contents/buscas.json?ref=main', { cache: 'no-store' });
+    if (atual.ok) corpo.sha = (await atual.json()).sha;
+    var r = await gh('/contents/buscas.json', { method: 'PUT', body: JSON.stringify(corpo) });
+    if (!r.ok) throw new Error('não consegui salvar a lista (código ' + r.status + '). Confira o token.');
+  }
+
+  async function disparar(id) {
+    var r = await gh('/actions/workflows/buscar.yml/dispatches', {
+      method: 'POST', body: JSON.stringify({ ref: 'main', inputs: { id: id || '' } })
+    });
+    if (!r.ok) throw new Error('não consegui acionar o robô (código ' + r.status + '). Confira as permissões do token.');
+  }
+
+  async function salvarSomente() {
+    if (!token) return;
+    try { status('Salvando...'); await salvarLista(); status('Lista salva.'); }
+    catch (e) { status('Erro: ' + e.message); }
+  }
+
+  async function executar(id) {
+    if (ocupado) return;
+    if (!token) { status('Toque em ⚙ e cole o token para buscar.'); return; }
+    ocupado = true;
+    try {
+      status('Salvando a lista...');
+      await salvarLista();
+      var antes = precos.atualizado;
+      status('Acionando o robô...');
+      await disparar(id);
+      for (var i = 1; i <= 30; i++) {
+        status('Buscando preços... ' + (i * 10) + 's (leva de 1 a 2 minutos)');
+        await esperar(10000);
+        var novo = await lerArquivo('precos.json', null);
+        if (novo && novo.atualizado && novo.atualizado !== antes) {
+          precos = novo;
+          precos.resultados = precos.resultados || {};
+          status('Preços atualizados.');
+          desenhar();
+          ocupado = false;
+          return;
+        }
+      }
+      status('O robô ainda não terminou. Toque em Recarregar daqui a pouco.');
+    } catch (e) { status('Erro: ' + e.message); }
+    ocupado = false;
+  }
+
+  // ---------- TELA ----------
+  function desenharAbas() {
+    var area = $('abas');
+    area.innerHTML = '';
+    ['Viagens'].concat(lista.categorias || []).forEach(function (nome) {
+      area.appendChild(el('button', {
+        class: 'chip' + (nome === aba ? ' ativo' : ''), texto: nome,
+        clique: function () { aba = nome; desenhar(); }
+      }));
+    });
+    if (token) area.appendChild(el('button', {
+      class: 'chip novo', texto: '+ Categoria',
+      clique: function () {
+        var nome = (prompt('Nome da categoria (ex.: Celular, Ferramentas):') || '').trim();
+        if (!nome || nome === 'Viagens' || lista.categorias.indexOf(nome) >= 0) return;
+        lista.categorias.push(nome);
+        aba = nome;
+        desenhar();
+        salvarSomente();
+      }
+    }));
+  }
+
+  function campo(id, rotulo, tipo, valor, dica, listaId) {
+    var i = el('input', { id: id, type: tipo || 'text' });
+    if (valor) i.value = valor;
+    if (dica) i.placeholder = dica;
+    if (listaId) i.setAttribute('list', listaId);
+    return el('div', {}, [el('label', { for: id, texto: rotulo }), i]);
+  }
+
+  function desenharForm() {
+    var f = $('form');
+    f.innerHTML = '';
+    if (!token) {
+      f.appendChild(el('div', { class: 'nota', texto: 'Modo leitura. Toque em ⚙ e cole o token para adicionar buscas e atualizar preços.' }));
+      return;
+    }
+    if (aba === 'Viagens') {
+      f.appendChild(el('h2', { texto: 'Nova viagem' }));
+      f.appendChild(campo('vOrigem', 'Saindo de', 'text', 'Belo Horizonte (CNF)', '', 'aeroportos'));
+      f.appendChild(campo('vDestino', 'Destino', 'text', '', 'ex.: Recife (REC)', 'aeroportos'));
+      f.appendChild(el('div', { class: 'dupla' }, [campo('vIda', 'Ida', 'date'), campo('vVolta', 'Volta', 'date')]));
+      f.appendChild(campo('vPessoas', 'Pessoas', 'number', '2'));
+      f.appendChild(el('button', { class: 'botao', texto: '🔎 Adicionar e buscar', clique: novaViagem }));
+    } else {
+      f.appendChild(el('h2', { texto: 'Nova busca em ' + aba }));
+      f.appendChild(campo('pTermo', 'Produto (com modelo, tamanho, cor)', 'text', '', 'ex.: tênis Nike Pegasus 41 masculino 42'));
+      f.appendChild(el('div', { class: 'dupla' }, [
+        campo('pMin', 'Preço mínimo (R$)', 'number', '', 'opcional'),
+        campo('pMax', 'Preço máximo (R$)', 'number', '', 'opcional')
+      ]));
+      f.appendChild(el('div', { class: 'nota', texto: 'O preço mínimo ajuda a tirar acessórios e anúncios errados.' }));
+      f.appendChild(el('button', { class: 'botao', texto: '🔎 Adicionar e buscar', clique: novoProduto }));
+      f.appendChild(el('div', { class: 'acoes' }, [el('button', {
+        class: 'perigo', texto: 'Excluir categoria ' + aba,
+        clique: function () {
+          if (!confirm('Excluir a categoria "' + aba + '" e as buscas dela?')) return;
+          lista.itens = lista.itens.filter(function (i) { return i.categoria !== aba; });
+          lista.categorias = lista.categorias.filter(function (c) { return c !== aba; });
+          aba = 'Viagens';
+          desenhar();
+          salvarSomente();
+        }
+      })]));
+    }
+  }
+
+  function lerAeroporto(texto) {
+    var m = /^(.*?)\s*\(([A-Za-z]{3})\)\s*$/.exec(texto || '');
+    return m ? { nome: m[1].trim(), cod: m[2].toUpperCase() } : null;
+  }
+
+  function novaViagem() {
+    var o = lerAeroporto($('vOrigem').value), d = lerAeroporto($('vDestino').value);
+    var ida = $('vIda').value, volta = $('vVolta').value;
+    if (!o || !d) { status('Escreva cidade e código do aeroporto, assim: Recife (REC).'); return; }
+    if (!ida || !volta || volta < ida) { status('Confira as datas de ida e volta.'); return; }
+    var item = {
+      id: 'i' + Date.now(), tipo: 'viagem',
+      origem: o.cod, origemNome: o.nome, destino: d.cod, destinoNome: d.nome,
+      ida: ida, volta: volta, pessoas: parseInt($('vPessoas').value, 10) || 1
+    };
+    lista.itens.push(item);
+    desenhar();
+    executar(item.id);
+  }
+
+  function novoProduto() {
+    var termo = $('pTermo').value.trim();
+    if (!termo) { status('Digite o produto.'); return; }
+    var item = { id: 'i' + Date.now(), tipo: 'produto', categoria: aba, termo: termo };
+    var min = parseFloat($('pMin').value), max = parseFloat($('pMax').value);
+    if (min > 0) item.min = min;
+    if (max > 0) item.max = max;
+    lista.itens.push(item);
+    desenhar();
+    executar(item.id);
+  }
+
+  function acoesItem(item) {
+    if (!token) return null;
+    return el('div', { class: 'acoes' }, [
+      el('button', { texto: '↻ Atualizar preço', clique: function () { executar(item.id); } }),
+      el('button', {
+        class: 'perigo', texto: 'Remover',
+        clique: function () {
+          if (!confirm('Remover esta busca?')) return;
+          lista.itens = lista.itens.filter(function (i) { return i.id !== item.id; });
+          desenhar();
+          salvarSomente();
+        }
+      })
+    ]);
+  }
+
+  function linha(titulo, detalhe, preco, link) {
+    var esquerda = el('span', {}, [document.createTextNode(titulo), detalhe ? el('small', { texto: detalhe }) : null]);
+    var props = { class: 'linha' };
+    if (link) { props.href = link; props.target = '_blank'; props.rel = 'noopener'; }
+    return el(link ? 'a' : 'div', props, [esquerda, el('b', { texto: preco })]);
+  }
+
+  function cartaoProduto(item) {
+    var r = precos.resultados[item.id];
+    var faixa = [item.min ? 'mín. ' + dinheiro(item.min) : '', item.max ? 'máx. ' + dinheiro(item.max) : ''].filter(Boolean).join(' · ');
+    var c = el('div', { class: 'cartao' }, [el('h2', { texto: item.termo }), faixa ? el('div', { class: 'nota', texto: faixa }) : null]);
+    if (!r) c.appendChild(el('div', { class: 'nota', texto: 'Ainda sem preços.' }));
+    else if (r.erro) c.appendChild(el('div', { class: 'erro', texto: r.erro }));
+    else if (!r.ofertas || !r.ofertas.length) c.appendChild(el('div', { class: 'nota', texto: 'Nenhuma oferta nas lojas confiáveis dentro da faixa de preço.' }));
+    else r.ofertas.forEach(function (o) { c.appendChild(linha(o.loja, o.titulo, dinheiro(o.preco), o.link)); });
+    var acoes = acoesItem(item);
+    if (acoes) c.appendChild(acoes);
+    return c;
+  }
+
+  function cartaoViagem(item) {
+    var r = precos.resultados[item.id];
+    var c = el('div', { class: 'cartao' }, [
+      el('h2', { texto: item.origemNome + ' → ' + item.destinoNome }),
+      el('div', { class: 'nota', texto: dataBR(item.ida) + ' a ' + dataBR(item.volta) + ' · ' + item.pessoas + ' pessoa(s)' })
+    ]);
+    if (!r) c.appendChild(el('div', { class: 'nota', texto: 'Ainda sem preços.' }));
+    else if (r.erro) c.appendChild(el('div', { class: 'erro', texto: r.erro }));
+    else {
+      c.appendChild(el('h3', { texto: 'Voos (ida e volta)' }));
+      if (r.erroVoos) c.appendChild(el('div', { class: 'erro', texto: r.erroVoos }));
+      (r.voos || []).forEach(function (v) {
+        var paradas = v.paradas === 0 ? 'direto' : v.paradas + ' parada(s)';
+        var dur = v.minutos ? Math.floor(v.minutos / 60) + 'h' + ('0' + (v.minutos % 60)).slice(-2) : '';
+        c.appendChild(linha(v.cia, [paradas, dur, v.saida ? 'sai ' + v.saida.slice(11) : ''].filter(Boolean).join(' · '), dinheiro(v.preco), r.linkVoos));
+      });
+      c.appendChild(el('h3', { texto: 'Hospedagem' }));
+      if (r.erroHoteis) c.appendChild(el('div', { class: 'erro', texto: r.erroHoteis }));
+      (r.hoteis || []).forEach(function (h) {
+        var det = [h.nota ? 'nota ' + h.nota : '', h.total ? 'total ' + dinheiro(h.total) : ''].filter(Boolean).join(' · ');
+        c.appendChild(linha(h.nome, det, dinheiro(h.diaria) + '/noite', h.link));
+      });
+    }
+    c.appendChild(el('h3', { texto: 'Ônibus' }));
+    var q = 'passagem de ônibus ' + item.origemNome + ' para ' + item.destinoNome + ' ' + dataBR(item.ida);
+    c.appendChild(el('a', { class: 'link', href: 'https://www.google.com/search?q=' + encodeURIComponent(q), target: '_blank', rel: 'noopener', texto: 'Ver passagens de ônibus ›' }));
+    var acoes = acoesItem(item);
+    if (acoes) c.appendChild(acoes);
+    return c;
+  }
+
+  function desenharItens() {
+    var area = $('itens');
+    area.innerHTML = '';
+    var itens = lista.itens.filter(function (i) {
+      return aba === 'Viagens' ? i.tipo === 'viagem' : (i.tipo === 'produto' && i.categoria === aba);
+    });
+    itens.forEach(function (i) { area.appendChild(i.tipo === 'viagem' ? cartaoViagem(i) : cartaoProduto(i)); });
+  }
+
+  function desenharRodape() {
+    var r = $('rodape');
+    r.innerHTML = '';
+    var quando = precos.atualizado ? new Date(precos.atualizado).toLocaleString('pt-BR') : 'nunca';
+    var uso = precos.uso && precos.uso.mes === new Date().toISOString().slice(0, 7) ? precos.uso.buscas : 0;
+    r.appendChild(el('div', { texto: 'Última atualização: ' + quando }));
+    r.appendChild(el('div', { texto: 'Buscas usadas no mês: ' + uso + ' de 250' }));
+    r.appendChild(el('div', { class: 'acoes' }, [
+      el('button', { texto: 'Recarregar', clique: carregar }),
+      token ? el('button', { texto: '↻ Atualizar tudo', clique: function () {
+        if (confirm('Atualizar todas as buscas? Gasta 1 busca por produto e 2 por viagem.')) executar('');
+      } }) : null
+    ]));
+  }
+
+  function desenhar() { desenharAbas(); desenharForm(); desenharItens(); desenharRodape(); }
+
+  async function carregar() {
+    status('Carregando...');
+    var l = await lerArquivo('buscas.json', null);
+    if (l) { lista = l; lista.itens = lista.itens || []; lista.categorias = lista.categorias || []; lista.lojas = lista.lojas || []; }
+    precos = await lerArquivo('precos.json', precos) || precos;
+    precos.resultados = precos.resultados || {};
+    $('campoLojas').value = lista.lojas.join(', ');
+    status('');
+    desenhar();
+  }
+
+  // ---------- CONFIGURAÇÃO ----------
+  $('btnConfig').onclick = function () {
+    $('config').hidden = !$('config').hidden;
+    $('campoToken').value = token;
+  };
+
+  $('btnSalvarConfig').onclick = async function () {
+    token = $('campoToken').value.trim();
+    try { localStorage.setItem(CHAVE_TOKEN, token); } catch (e) {}
+    var lojasDigitadas = $('campoLojas').value.split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    $('config').hidden = true;
+    await carregar();
+    if (token) { lista.lojas = lojasDigitadas; $('campoLojas').value = lojasDigitadas.join(', '); await salvarSomente(); }
+  };
+
+  carregar();
+</script>
+</body>
+</html>
