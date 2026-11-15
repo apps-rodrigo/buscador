@@ -31,6 +31,17 @@
       "tipo": "produto",
       "categoria": "Tênis",
       "termo": "Nike air force 1"
+    },
+    {
+      "id": "i1794786638255",
+      "tipo": "viagem",
+      "origem": "CNF",
+      "origemNome": "Belo Horizonte",
+      "destino": "MCZ",
+      "destinoNome": "Maceió",
+      "ida": "2027-01-15",
+      "volta": "2027-01-25",
+      "pessoas": 2
     }
   ]
 }
