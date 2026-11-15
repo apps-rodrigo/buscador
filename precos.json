@@ -1,57 +1,5 @@
 {
   "resultados": {
-    "i1794786538132": {
-      "ofertas": [
-        {
-          "titulo": "Tênis Air Force 1 Shadow Branco",
-          "loja": "impulseoutlet.lojavirtualnuvem.com.br",
-          "preco": 169,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:7633721272673374100,headlineOfferDocid:7633721272673374100,imageDocid:8666071400679194126,rds:PC_18385425046990961649|PROD_PC_18385425046990961649,pvt:a&hl=pt-br&gl=br&udm=28"
-        },
-        {
-          "titulo": "Tênis Masculino Nike Revolution 8 MIDNIGHT NAVYPURE P 039",
-          "loja": "Drastosa Esportes",
-          "preco": 299.99,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:3344873672056176190,headlineOfferDocid:3344873672056176190,imageDocid:9196202904213762475,rds:PC_5477693794596520766|PROD_PC_5477693794596520766,pvt:a&hl=pt-br&gl=br&udm=28"
-        },
-        {
-          "titulo": "Tênis Nike Air Max Amarelo E Branco 39 - Usado - Moda Confortável",
-          "loja": "Enjoei.com",
-          "preco": 308,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:11798950215713921805,headlineOfferDocid:11798950215713921805,imageDocid:9417875746841393147,rds:PC_6266131367749294840|PROD_PC_6266131367749294840,pvt:a&hl=pt-br&gl=br&udm=28"
-        },
-        {
-          "titulo": "Tenis Nike Air Max Excee Verde 39 - Usado",
-          "loja": "Enjoei.com",
-          "preco": 318,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:10966122990783128674,headlineOfferDocid:10966122990783128674,imageDocid:9660830989766573654,pvt:a&hl=pt-br&gl=br&udm=28"
-        },
-        {
-          "titulo": "Tênis Air Force 1 Shadow Candy",
-          "loja": "impulseoutlet.lojavirtualnuvem.com.br",
-          "preco": 399,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:18142394491022191581,headlineOfferDocid:18142394491022191581,imageDocid:174932516170855585,rds:PC_18385425046990961649|PROD_PC_18385425046990961649,pvt:a&hl=pt-br&gl=br&udm=28"
-        },
-        {
-          "titulo": "Tênis Nike Air Max Excee Masculino - Preto - Masculino - Dafiti",
-          "loja": "Dafiti",
-          "preco": 429.99,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:1643797487517081420,headlineOfferDocid:1643797487517081420,imageDocid:14331756437436166309,rds:PC_6266131367749294840|PROD_PC_6266131367749294840,pvt:a&hl=pt-br&gl=br&udm=28"
-        },
-        {
-          "titulo": "Tênis Nike Masculino - Preto - 39 - Lisa",
-          "loja": "Enjoei.com",
-          "preco": 512,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=productid:2393563554607797074,headlineOfferDocid:2393563554607797074,imageDocid:6376527014258896651,pvt:a&hl=pt-br&gl=br&udm=28"
-        },
-        {
-          "titulo": "Tênis Nike Air Force 1 '07 Mini Jewel Feminino",
-          "loja": "Authentic Feet",
-          "preco": 549.99,
-          "link": "https://www.google.com/search?ibp=oshop&q=Air force 1 tam 39&prds=catalogid:8071771525011905628,productid:6956961436927445869,headlineOfferDocid:5338451751848457715,imageDocid:3037197051603777084,rds:PC_4680008169730778177|PROD_PC_4680008169730778177,gpcid:4680008169730778177,mid:576462833332917639,pvt:a&hl=pt-br&gl=br&udm=28"
-        }
-      ]
-    },
     "i1794786577281": {
       "ofertas": [
         {
@@ -103,11 +51,88 @@
           "link": "https://www.google.com/search?ibp=oshop&q=Nike air force 1&prds=productid:615549977502564069,headlineOfferDocid:615549977502564069,imageDocid:6773216166881601749,rds:PC_17727575913268338396|PROD_PC_17727575913268338396,pvt:a&hl=pt-br&gl=br&udm=28"
         }
       ]
+    },
+    "i1794786638255": {
+      "voos": [
+        {
+          "cia": "Azul",
+          "preco": 3114,
+          "minutos": 640,
+          "paradas": 1,
+          "saida": "2027-01-15 12:45"
+        },
+        {
+          "cia": "Gol",
+          "preco": 3375,
+          "minutos": 610,
+          "paradas": 2,
+          "saida": "2027-01-15 14:40"
+        },
+        {
+          "cia": "Gol",
+          "preco": 3375,
+          "minutos": 610,
+          "paradas": 2,
+          "saida": "2027-01-15 14:40"
+        },
+        {
+          "cia": "LATAM",
+          "preco": 3617,
+          "minutos": 330,
+          "paradas": 1,
+          "saida": "2027-01-15 17:05"
+        },
+        {
+          "cia": "Azul",
+          "preco": 3871,
+          "minutos": 385,
+          "paradas": 1,
+          "saida": "2027-01-15 17:00"
+        }
+      ],
+      "hoteis": [
+        {
+          "nome": "Hostel kay Pacha e Camping",
+          "diaria": 105,
+          "total": 1045,
+          "nota": 5,
+          "link": "https://www.instagram.com/hostel.kay.pacha"
+        },
+        {
+          "nome": "Proxima estacao",
+          "diaria": 136,
+          "total": 1360,
+          "nota": 4.6,
+          "link": ""
+        },
+        {
+          "nome": "Pousada Caliente",
+          "diaria": 150,
+          "total": 1500,
+          "nota": 4.3,
+          "link": ""
+        },
+        {
+          "nome": "Hostel Rocha de Morais",
+          "diaria": 180,
+          "total": 1800,
+          "nota": 4.1,
+          "link": ""
+        },
+        {
+          "nome": "Recanto das Folhas",
+          "diaria": 230,
+          "total": 2300,
+          "nota": 4.7,
+          "link": ""
+        }
+      ],
+      "linkVoos": "https://www.google.com/travel/flights?hl=pt-br&gl=br&curr=BRL&tfs=CBwQAhoeEgoyMDI3LTAxLTE1agcIARIDQ05GcgcIARIDTUNaGh4SCjIwMjctMDEtMjVqBwgBEgNNQ1pyBwgBEgNDTkZAAUABSAFwAZgBAQ&tfu=EgIIAQ"
     }
   },
   "uso": {
     "mes": "2026-11",
-    "buscas": 3
+    "buscas": 5
   },
-  "atualizado": "2026-11-15T23:49:46.729Z"
+  "atualizado": "2026-11-15T23:50:51.386Z"
 }
